@@ -33,7 +33,7 @@
 
 //==============================================================================
 
-class WahWahAudioProcessor : public AudioProcessor
+class WahWahAudioProcessor : public AudioProcessor, private OSCReceiver, private OSCReceiver::ListenerWithOSCAddress<OSCReceiver::MessageLoopCallback>
 {
 public:
     //==============================================================================
@@ -200,6 +200,79 @@ public:
     PluginParameterLinSlider paramEnvelopeRelease;
 
 private:
+    //==============================================================================
+    
+    void oscMessageReceived(const OSCMessage& message) override
+    {
+        DBG("Message Received: ");
+        
+        OSCAddressPattern addressPattern = message.getAddressPattern();
+        
+        if (message.size() == 1 && message[0].isFloat32()) {
+
+            float value = message[0].getFloat32();
+            
+            DBG("    value " + String(value) + " to AP " + addressPattern.toString());
+            
+            // mode
+            if (addressPattern.matches(modeAddressPattern)) {
+                paramMode.updateValue(value);
+            }
+            // mix
+            if (addressPattern.matches(mixAddressPattern)) {
+                paramMix.updateValue(value);
+            }
+            // frequency
+            else if (addressPattern.matches(frequencyAddressPattern)) {
+                paramFrequency.updateValue(value);
+            }
+            // qfactor
+            else if (addressPattern.matches(qfactorAddressPattern)) {
+                paramQfactor.updateValue(value);
+            }
+            // gain
+            else if (addressPattern.matches(gainAddressPattern)) {
+                paramGain.updateValue(value);
+            }
+            else if (addressPattern.matches(filtertypeAddressPattern)) {
+                paramFilterType.updateValue(value);
+            }
+            // lfo frequency
+            else if (addressPattern.matches(lfofrequencyAddressPattern)) {
+                paramLFOfrequency.updateValue(value);
+            }
+            // lfo env
+            else if (addressPattern.matches(lfoenvAddressPattern)) {
+                paramMixLFOandEnvelope.updateValue(value);
+            }
+            // env attack
+            else if (addressPattern.matches(envattackAddressPattern)) {
+                paramEnvelopeAttack.updateValue(value);
+            }
+            // env release
+            else if (addressPattern.matches(envreleaseAddressPattern)) {
+                paramEnvelopeRelease.updateValue(value);
+            }
+            else {
+                DBG("   unhandled address pattern: " + addressPattern.toString());
+            }
+        }
+        else {
+            DBG("   unhandled address pattern: " + addressPattern.toString());
+        }
+    }
+    
+    String modeAddressPattern {"/param/mode"};
+    String mixAddressPattern {"/param/mix"};
+    String frequencyAddressPattern {"/param/frequency"};
+    String qfactorAddressPattern {"/param/qfactor"};
+    String gainAddressPattern {"/param/gain"};
+    String filtertypeAddressPattern {"/param/filtertype"};
+    String lfofrequencyAddressPattern {"/param/lfofrequency"};
+    String lfoenvAddressPattern {"/param/lfo/env"};
+    String envattackAddressPattern {"/param/env.attack"};
+    String envreleaseAddressPattern {"/param/env.release"};
+    
     //==============================================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WahWahAudioProcessor)

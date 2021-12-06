@@ -58,6 +58,24 @@ WahWahAudioProcessor::WahWahAudioProcessor():
 {
     centreFrequency = paramFrequency.getTargetValue();
     parameters.apvts.state = ValueTree (Identifier (getName().removeCharacters ("- ")));
+    
+    // OSC
+    if (! connect (9001)) {
+        DBG("Error: could not connect to UDP port 9001.");
+    } else {
+        DBG("Listening on UDP port 9001.");
+    }
+    
+    OSCReceiver::addListener (this, modeAddressPattern);
+    OSCReceiver::addListener (this, mixAddressPattern);
+    OSCReceiver::addListener (this, frequencyAddressPattern);
+    OSCReceiver::addListener (this, qfactorAddressPattern);
+    OSCReceiver::addListener (this, gainAddressPattern);
+    OSCReceiver::addListener (this, filtertypeAddressPattern);
+    OSCReceiver::addListener (this, lfofrequencyAddressPattern);
+    OSCReceiver::addListener (this, lfoenvAddressPattern);
+    OSCReceiver::addListener (this, envattackAddressPattern);
+    OSCReceiver::addListener (this, envreleaseAddressPattern);
 }
 
 WahWahAudioProcessor::~WahWahAudioProcessor()

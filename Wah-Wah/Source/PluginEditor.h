@@ -79,6 +79,10 @@ private:
 
     void timerCallback() override;
     void updateUIcomponents();
+    
+    
+    //======================================
+    OSCSender sender;
 
     //==============================================================================
 

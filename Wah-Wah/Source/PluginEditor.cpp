@@ -51,6 +51,18 @@ WahWahAudioProcessorEditor::WahWahAudioProcessorEditor (WahWahAudioProcessor& p)
 
                 components.add (aSlider);
                 editorHeight += sliderHeight;
+                
+                // OSC
+                aSlider->onValueChange = [this, aSlider, parameter]
+                {
+                    float sliderVal = static_cast<float>(aSlider->getValue());
+                    String sliderID = parameter->paramID;
+                    DBG(sliderID + ": " + String(sliderVal));
+                    
+                    if (! sender.send("/param/" + sliderID, sliderVal)) {
+                        DBG("Error: could not send OSC message.");
+                    }
+                };
             }
 
             //======================================
@@ -83,6 +95,18 @@ WahWahAudioProcessorEditor::WahWahAudioProcessorEditor (WahWahAudioProcessor& p)
 
                 components.add (aComboBox);
                 editorHeight += comboBoxHeight;
+                
+                // OSC
+                aComboBox->onChange = [this, aComboBox, parameter]
+                {
+                    float comboVal = static_cast<float>(aComboBox->getSelectedId());
+                    String comboID = parameter->paramID;
+                    DBG(comboID + ": " + String(comboVal));
+
+                    if (! sender.send("/param/" + comboID, comboVal)) {
+                        DBG("Error: could not send OSC message.");
+                    }
+                };
             }
 
             //======================================
@@ -103,6 +127,15 @@ WahWahAudioProcessorEditor::WahWahAudioProcessorEditor (WahWahAudioProcessor& p)
     editorHeight += components.size() * editorPadding;
     setSize (editorWidth, editorHeight);
     startTimer (50);
+    
+    //======================================
+    // TODO: change target host to our elk-pi endpoint.
+    // Keep as localhost for development purposes.
+    if (! sender.connect ("127.0.0.1", 9001)) {
+        DBG("Error: could not connect to UDP port 9001.");
+    } else {
+        DBG("Connected to UDP port 9001.");
+    }
 }
 
 WahWahAudioProcessorEditor::~WahWahAudioProcessorEditor()
