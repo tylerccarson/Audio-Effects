@@ -60,10 +60,10 @@ WahWahAudioProcessor::WahWahAudioProcessor():
     parameters.apvts.state = ValueTree (Identifier (getName().removeCharacters ("- ")));
     
     // OSC
-    if (! connect (9001)) {
-        DBG("Error: could not connect to UDP port 9001.");
+    if (! connect (25024)) {
+        DBG("Error: could not connect to UDP port 24024.");
     } else {
-        DBG("Listening on UDP port 9001.");
+        DBG("Listening on UDP port 24024.");
     }
     
     OSCReceiver::addListener (this, modeAddressPattern);
