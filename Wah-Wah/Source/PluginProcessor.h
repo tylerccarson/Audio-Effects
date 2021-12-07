@@ -262,16 +262,16 @@ private:
         }
     }
     
-    String modeAddressPattern {"/param/mode"};
-    String mixAddressPattern {"/param/mix"};
-    String frequencyAddressPattern {"/param/frequency"};
-    String qfactorAddressPattern {"/param/qfactor"};
-    String gainAddressPattern {"/param/gain"};
-    String filtertypeAddressPattern {"/param/filtertype"};
-    String lfofrequencyAddressPattern {"/param/lfofrequency"};
-    String lfoenvAddressPattern {"/param/lfo/env"};
-    String envattackAddressPattern {"/param/env.attack"};
-    String envreleaseAddressPattern {"/param/env.release"};
+    String modeAddressPattern {"/parameter/Wah-Wah/mode"};
+    String mixAddressPattern {"/parameter/Wah-Wah/mix"};
+    String frequencyAddressPattern {"/parameter/Wah-Wah/frequency"};
+    String qfactorAddressPattern {"/parameter/Wah-Wah/qfactor"};
+    String gainAddressPattern {"/parameter/Wah-Wah/gain"};
+    String filtertypeAddressPattern {"/parameter/Wah-Wah/filtertype"};
+    String lfofrequencyAddressPattern {"/parameter/Wah-Wah/lfofrequency"};
+    String lfoenvAddressPattern {"/parameter/Wah-Wah/lfo/env"};
+    String envattackAddressPattern {"/parameter/Wah-Wah/env.attack"};
+    String envreleaseAddressPattern {"/parameter/Wah-Wah/env.release"};
     
     //==============================================================================
 

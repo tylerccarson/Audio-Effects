@@ -59,7 +59,7 @@ WahWahAudioProcessorEditor::WahWahAudioProcessorEditor (WahWahAudioProcessor& p)
                     String sliderID = parameter->paramID;
                     DBG(sliderID + ": " + String(sliderVal));
                     
-                    if (! sender.send("/param/" + sliderID, sliderVal)) {
+                    if (! sender.send("/parameter/Wah-Wah/" + sliderID, sliderVal)) {
                         DBG("Error: could not send OSC message.");
                     }
                 };
@@ -103,7 +103,7 @@ WahWahAudioProcessorEditor::WahWahAudioProcessorEditor (WahWahAudioProcessor& p)
                     String comboID = parameter->paramID;
                     DBG(comboID + ": " + String(comboVal));
 
-                    if (! sender.send("/param/" + comboID, comboVal)) {
+                    if (! sender.send("/parameter/Wah-Wah/" + comboID, comboVal)) {
                         DBG("Error: could not send OSC message.");
                     }
                 };
@@ -131,10 +131,10 @@ WahWahAudioProcessorEditor::WahWahAudioProcessorEditor (WahWahAudioProcessor& p)
     //======================================
     // TODO: change target host to our elk-pi endpoint.
     // Keep as localhost for development purposes.
-    if (! sender.connect ("127.0.0.1", 9001)) {
-        DBG("Error: could not connect to UDP port 9001.");
+    if (! sender.connect ("elk-pi.local", 24024)) {
+        DBG("Error: could not connect to UDP port 24024.");
     } else {
-        DBG("Connected to UDP port 9001.");
+        DBG("Connected to UDP port 24024.");
     }
 }
 
